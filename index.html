@@ -50,7 +50,7 @@
 <header>
   <h1>Discordサーバーを宣伝しよう！</h1>
   <p>誰でも無料でサーバーを紹介できる宣伝サイト</p>
-  <a class="btn" href="#add">サーバーを登録</a>
+  <a class="btn" href="#post">サーバーを登録</a>
 </header>
 
 <section>
@@ -59,12 +59,40 @@
   <p>・雑談・ゲーム総合サーバー</p>
 </section>
 
-<section id="add">
-  <h2>➕ サーバー登録方法</h2>
-  <p>① Discord招待リンクを用意</p>
-  <p>② サーバー名・説明を書く</p>
-  <p>③ 管理人に送信（今後フォーム予定）</p>
+<section id="post">
+  <h2>➕ サーバー投稿フォーム</h2>
+  <form onsubmit="addServer(event)">
+    <p><input id="name" placeholder="サーバー名" required></p>
+    <p><input id="invite" placeholder="Discord招待リンク" required></p>
+    <p><textarea id="desc" placeholder="サーバー説明" required></textarea></p>
+    <button class="btn" type="submit">投稿する</button>
+  </form>
 </section>
+
+<section>
+  <h2>📋 投稿されたサーバー</h2>
+  <div id="serverList"></div>
+</section>
+
+<script>
+  function addServer(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const invite = document.getElementById('invite').value;
+    const desc = document.getElementById('desc').value;
+
+    const div = document.createElement('div');
+    div.style.background = '#23272A';
+    div.style.padding = '15px';
+    div.style.margin = '10px';
+    div.style.borderRadius = '10px';
+
+    div.innerHTML = `<h3>${name}</h3><p>${desc}</p><a class="btn" href="${invite}" target="_blank">参加する</a>`;
+    document.getElementById('serverList').prepend(div);
+
+    e.target.reset();
+  }
+</script>
 
 <footer>
   © 2025 Discord宣伝サイト
