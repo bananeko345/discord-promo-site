@@ -51,6 +51,7 @@
   <h1>Discordサーバーを宣伝しよう！</h1>
   <p>誰でも無料でサーバーを紹介できる宣伝サイト</p>
   <a class="btn" href="#post">サーバーを登録</a>
+  <a class="btn" href="#search">サーバーを検索</a>
 </header>
 
 <section>
@@ -67,12 +68,50 @@
     <p><textarea id="desc" placeholder="サーバー説明" required></textarea></p>
     <button class="btn" type="submit">投稿する</button>
   </form>
+  <p id="postMsg" style="color:#57F287; display:none;">✅ 投稿しました！</p>
+</section>
+
+<section id="search">
+  <h2>🔍 サーバー検索</h2>
+  <input id="searchInput" placeholder="サーバー名で検索" onkeyup="searchServer()">
 </section>
 
 <section>
   <h2>📋 投稿されたサーバー</h2>
   <div id="serverList"></div>
 </section>
+
+<script>
+  function addServer(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const invite = document.getElementById('invite').value;
+    const desc = document.getElementById('desc').value;
+
+    const div = document.createElement('div');
+    div.className = 'serverItem';
+    div.style.background = '#23272A';
+    div.style.padding = '15px';
+    div.style.margin = '10px';
+    div.style.borderRadius = '10px';
+
+    div.innerHTML = `<h3>${name}</h3><p>${desc}</p><a class="btn" href="${invite}" target="_blank">参加する</a>`;
+    document.getElementById('serverList').prepend(div);
+
+    document.getElementById('postMsg').style.display = 'block';
+    setTimeout(()=>document.getElementById('postMsg').style.display='none',2000);
+
+    e.target.reset();
+  }
+
+  function searchServer() {
+    const keyword = document.getElementById('searchInput').value.toLowerCase();
+    const servers = document.getElementsByClassName('serverItem');
+    for (let s of servers) {
+      s.style.display = s.innerText.toLowerCase().includes(keyword) ? 'block' : 'none';
+    }
+  }
+</script>
 
 <script>
   function addServer(e) {
