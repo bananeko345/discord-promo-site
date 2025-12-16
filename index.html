@@ -109,25 +109,34 @@
 </section>
 
 <script>
-  function addServer(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const invite = document.getElementById('invite').value;
-    const desc = document.getElementById('desc').value;
-
+  // 保存＆読み込み（※GitHub Pagesでは共有保存不可。後でフォーム連携可能）
+  function loadServers(){
+    const data = JSON.parse(localStorage.getItem('servers')||'[]');
+    data.forEach(s=>renderServer(s));
+  }
+  function saveServer(s){
+    const data = JSON.parse(localStorage.getItem('servers')||'[]');
+    data.unshift(s);
+    localStorage.setItem('servers', JSON.stringify(data));
+  }
+  function renderServer(s){
     const div = document.createElement('div');
     div.className = 'serverItem';
-    div.style.background = '#23272A';
-    div.style.padding = '15px';
-    div.style.margin = '10px';
-    div.style.borderRadius = '10px';
-
-    div.innerHTML = `<h3>${name}</h3><p>${desc}</p><a class="btn" href="${invite}" target="_blank">参加する</a>`;
+    div.innerHTML = `<h3>${s.name}</h3><p>${s.desc}</p><a class="btn" href="${s.invite}" target="_blank">参加する</a>`;
     document.getElementById('serverList').prepend(div);
+  }
 
+  function addServer(e) {
+    e.preventDefault();
+    const s = {
+      name: document.getElementById('name').value,
+      invite: document.getElementById('invite').value,
+      desc: document.getElementById('desc').value
+    };
+    saveServer(s);
+    renderServer(s);
     document.getElementById('postMsg').style.display = 'block';
     setTimeout(()=>document.getElementById('postMsg').style.display='none',2000);
-
     e.target.reset();
   }
 
@@ -138,31 +147,11 @@
       s.style.display = s.innerText.toLowerCase().includes(keyword) ? 'block' : 'none';
     }
   }
+
+  // 検索ボタンで確実に移動
+  document.querySelectorAll('a[href="#search"]').forEach(b=>{
+    b.addEventListener('click',()=>document.getElementById('search').scrollIntoView({behavior:'smooth'}));
+  });
+
+  loadServers();
 </script>
-
-<script>
-  function addServer(e) {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const invite = document.getElementById('invite').value;
-    const desc = document.getElementById('desc').value;
-
-    const div = document.createElement('div');
-    div.style.background = '#23272A';
-    div.style.padding = '15px';
-    div.style.margin = '10px';
-    div.style.borderRadius = '10px';
-
-    div.innerHTML = `<h3>${name}</h3><p>${desc}</p><a class="btn" href="${invite}" target="_blank">参加する</a>`;
-    document.getElementById('serverList').prepend(div);
-
-    e.target.reset();
-  }
-</script>
-
-<footer>
-  © 2025 Discord宣伝サイト
-</footer>
-
-</body>
-</html>
